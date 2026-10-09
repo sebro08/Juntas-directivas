@@ -1,0 +1,132 @@
+:host {
+  width: 100%;
+}
+
+/* --- Contenedor principal --- */
+.container {
+  padding: 2rem 1.5rem;
+  min-height: calc(100vh - 64px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Título */
+h1 {
+  font-size: 2.2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Botón rojo */
+.custom-red-button {
+  background: #d32f2f;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  padding: 0.45rem 1rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.custom-red-button:hover {
+  background: #b71c1c;
+}
+
+/* Campo filtrado */
+mat-form-field {
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 1.4rem;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+}
+.mat-elevation-z8 {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Cabecera y celdas */
+th,
+td {
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+}
+th {
+  font-weight: 600;
+}
+
+/* Icono expand */
+.mat-column-expand {
+  width: 48px;
+  padding-left: 0.5rem;
+}
+
+/* Filas de detalle (colapsadas por defecto) */
+.detail-row {
+  height: 0;
+  overflow: hidden;
+}
+.detail-row td {
+  padding: 0 !important;
+  border: none;
+  height: 0;
+}
+
+.detail-container {
+  background: #fafafa;
+  padding: 1rem 1.5rem;
+}
+.detail-container .content {
+  margin-top: 1rem;
+  white-space: pre-wrap;
+}
+
+/* Estado leída / no leída */
+.read {
+  color: green;
+  font-weight: 600;
+}
+.unread {
+  color: red;
+  font-weight: 600;
+}
+
+/* Resalta filas no leídas */
+.main-row.highlight {
+  background: #fff7f7;
+}
+
+/* Acciones */
+.d-center {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.6rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  th,
+  td {
+    font-size: 0.85rem;
+    padding: 0.6rem 0.75rem;
+  }
+  .content {
+    font-size: 0.9rem;
+  }
+}

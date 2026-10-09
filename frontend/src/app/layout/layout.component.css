@@ -1,0 +1,107 @@
+/* Reutilizando contenedor principal del style.css */
+.users-container {
+  @extend .settings-container;
+}
+
+/* Título consistente con otras vistas */
+.users-container h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* Buscador alineado a la derecha */
+.users-search {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.users-search mat-form-field {
+  width: 300px;
+}
+
+/* Tabla responsiva */
+.users-table {
+  @extend .settings-form;
+  padding: 0; /* Para evitar doble padding */
+  overflow-x: auto;
+}
+
+/* Estilo para tabla Material */
+.mat-elevation-z8 {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background-color: var(--background-white);
+}
+
+/* Cabecera de tabla */
+table mat-header-row {
+  background-color: var(--background-light);
+  font-weight: 600;
+}
+
+/* Celdas */
+.mat-cell, .mat-header-cell {
+  padding: 1rem;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Columna de acciones */
+.mat-column-delete {
+  width: 100px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Íconos de acción */
+.action-icon {
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--color-danger);
+  transition: color 0.2s ease-in-out;
+}
+
+.action-icon:hover {
+  color: #b91c1c;
+}
+
+/* Paginador */
+mat-paginator {
+  border-top: 1px solid #e5e7eb;
+  background-color: #fff;
+  border-radius: 0 0 12px 12px;
+  padding: 0.5rem 1rem;
+}
+
+/* Avatares o iniciales */
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .users-search {
+    justify-content: center;
+  }
+
+  .users-search mat-form-field {
+    width: 100%;
+  }
+
+  .mat-cell, .mat-header-cell {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .mat-column-delete {
+    width: auto;
+  }
+}

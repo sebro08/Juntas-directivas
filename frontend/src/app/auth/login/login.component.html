@@ -1,0 +1,47 @@
+<div class="full-background">
+    <div class="login-card">
+        <h2 class="text-center mb-4">Sign In</h2>
+
+        <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 1rem;">
+            <mat-form-field appearance="outline" class="mb-4">
+                <mat-label>Enter your email</mat-label>
+                <input
+                        matInput
+                        placeholder="pat@example.com"
+                        formControlName="email"
+                        required
+                />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Enter your password</mat-label>
+                <input formControlName="password" matInput [type]="hide() ? 'password' : 'text'" />
+                <button
+                        mat-icon-button
+                        matSuffix
+                        (click)="clickEvent($event)"
+                        [attr.aria-label]="'Hide password'"
+                        [attr.aria-pressed]="hide()"
+                >
+                    <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+
+            <p *ngIf="errorMessage" class="error text-center m-0" style="color: red">{{ errorMessage }}</p>
+
+            <div class="checkbox">
+                <input type="checkbox" id="remember" name="remember" />
+                <label for="remember">Remember me</label>
+            </div>
+
+            <button mat-flat-button (click)="onSubmit()">Iniciar Sesión</button>
+
+            <div class="footer-text" style="display: flex; flex-direction: column; justify-content: center">
+                <p class="text-center m-0"> Don’t have an account?</p>
+                <p class="text-center m-0"> Contact your administrator for it </p>
+            </div>
+
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,70 @@
+<div class="session-summary">
+    <h2>{{ session?.title }}</h2>
+    <div class="d-flex d-flex--align-center" style="justify-content: space-between">
+        <p>
+            <strong>Fecha:</strong> {{ session?.date }} |
+            <strong>Hora:</strong> {{ session?.timeStart }} - {{ session?.timeEnd }}
+        </p>
+            <button class="custom-red-button export-button" (click)="exportPdf()">
+            <mat-icon>picture_as_pdf</mat-icon>
+            Exportar
+        </button>
+
+    </div>
+
+    <hr />
+
+    <h3>Puntos de Agenda</h3>
+    <div *ngFor="let item of session?.agendaItems; let i = index" class="mb-3">
+        <mat-accordion>
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title> {{item.title}} </mat-panel-title>
+                </mat-expansion-panel-header>
+                <p><strong>Duración:</strong> {{ item.duration }} minutos</p>
+                <p>
+                    <strong>Expositor:</strong>
+                    {{ item.presenter ? item.presenter.firstName + ' ' + item.presenter.lastName : item.externalPresenter?.name }}
+                </p>
+
+                <p *ngIf="item.requiresVote">
+                    <strong>Resultado de votación:</strong>
+                    <span *ngIf="item.voteResult === 1"> Aprobado</span>
+                    <span *ngIf="item.voteResult === 2"> Rechazado</span>
+                    <span *ngIf="item.voteResult === 0"> No definido</span>
+                </p>
+
+                <div *ngIf="item.annotations.length > 0">
+                    <strong>Anotaciones:</strong>
+                    <ul>
+                        <li *ngFor="let note of item.annotations">
+                            {{ note.content }} <em>({{ note.timestamp | date: 'short' }})</em>
+                        </li>
+                    </ul>
+                </div>
+
+                <div *ngIf="item.decisions.length > 0">
+                    <strong>Decisiones:</strong>
+                    <ul>
+                        <li *ngFor="let decision of item.decisions">
+                            <strong>{{ decision.summary }}:</strong> {{ decision.result }}
+                        </li>
+                    </ul>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+
+    <hr />
+
+    <h3>Tareas asignadas</h3>
+    <ul *ngIf="session?.tasks.length > 0; else noTasks">
+        <li *ngFor="let task of session.tasks">
+            {{ task.description }} — <strong>{{ task.assignedTo.firstName + ' ' + task.assignedTo.lastName }}</strong>
+        </li>
+    </ul>
+
+    <ng-template #noTasks>
+        <p>No hay tareas asignadas.</p>
+    </ng-template>
+</div>

@@ -1,0 +1,31 @@
+<div class="settings-container">
+  
+  <div class="page-header">
+    <h1>Configuración de Parámetros</h1>
+  </div>
+
+  <form [formGroup]="form" class="settings-form">
+    <div class="form-row">
+      <div class="form-section">
+        <h3>Quorum Mínimo</h3>
+        <p>Define el número mínimo de miembros requeridos</p>
+        <mat-form-field appearance="outline" class="mat-mdc-form-field">
+          <input matInput placeholder="Ej. 5" formControlName="minimumQuorum">
+        </mat-form-field>
+      </div>
+
+      <div class="form-section">
+        <h3>Plazo Mínimo de Convocatoria</h3>
+        <p>Define el plazo mínimo de días para notificar</p>
+        <mat-form-field appearance="outline" class="mat-mdc-form-field">
+          <input matInput placeholder="Ej. 5" formControlName="minimumNoticeDays">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="settings-actions">
+      <button class="cancel-button w-100" mat-stroked-button color="warn" (click)="cancel()">Cancelar</button>
+      <button class="save-button w-100" mat-flat-button color="primary" (click)="save()" [disabled]="isUnchanged()">Guardar</button>
+    </div>    
+  </form>
+</div>

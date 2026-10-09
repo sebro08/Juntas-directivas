@@ -1,0 +1,133 @@
+.container {
+    min-height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.participants-container,
+.participants-container2 {
+    padding: 1.5rem;
+    background-color: #e6e5e5;
+    border-radius: 10px;
+    overflow-y: auto;
+    max-height: 70vh;
+}
+
+.participants-container {
+    width: 140px;
+    margin-right: 1rem;
+}
+
+.participants-container2 {
+    width: 180px;
+    margin-left: 1rem;
+}
+
+.participant--present {
+    color: #4ec64e;
+}
+
+.participant--absent {
+    color: red;
+}
+
+.click {
+    cursor: pointer;
+}
+
+.details-container {
+    background-color: #e6e5e5;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.execution-container {
+    background-color: #e6e5e5;
+    border-radius: 10px;
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.agenda-timer {
+    font-size: 1.2em;
+    margin: 0 1rem 1rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.agenda-timer.text-center {
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.agenda-timer span {
+    font-weight: bold;
+}
+
+.agenda-timer span[style*="red"] {
+    color: red;
+}
+
+.agenda-timer span[style*="goldenrod"] {
+    color: goldenrod;
+}
+
+.agenda-timer span[style*="black"] {
+    color: black;
+}
+
+.agenda-timer .expected {
+    font-size: 0.9em;
+    color: #666;
+    margin-left: 0.5rem;
+}
+
+.custom-red-button {
+    background-color: #f44336 !important; /* Material Red 500 */
+    color: white;
+}
+
+.custom-red-button:hover {
+    background-color: #d32f2f; /* Material Red 700 */
+}
+
+.vote-button {
+    background-color: #e0e0e0;
+    color: #000;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease;
+}
+
+.vote-button:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.selected-approve {
+    background-color: #1976d2 !important; /* azul */
+    color: #fff !important;
+    border-color: #1565c0;
+}
+
+.selected-reject {
+    background-color: #d32f2f !important; /* rojo */
+    color: #fff !important;
+    border-color: #c62828;
+}
+
+/* Scrollbars (optional, for better UX) */
+.participants-container::-webkit-scrollbar,
+.participants-container2::-webkit-scrollbar {
+    width: 6px;
+}
+
+.participants-container::-webkit-scrollbar-thumb,
+.participants-container2::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}

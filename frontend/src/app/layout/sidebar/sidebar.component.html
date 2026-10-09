@@ -1,0 +1,37 @@
+<mat-nav-list>
+  <!-- ADMIN ONLY -->
+  <ng-container *ngIf="isAdmin()">
+    <a mat-list-item routerLink="/users">
+      <mat-icon matListIcon>group</mat-icon>
+      Usuarios
+    </a>
+
+    <a mat-list-item routerLink="/sessions">
+      <mat-icon matListIcon>event</mat-icon>
+      Sesiones
+    </a>
+
+    <a mat-list-item routerLink="/sessions/execute">
+      <mat-icon matListIcon>play_circle</mat-icon>
+      Ejecución de Sesión
+    </a>
+
+    <a mat-list-item routerLink="/settings">
+      <mat-icon matListIcon>settings</mat-icon>
+      Configuración
+    </a>
+  </ng-container>
+
+  <!-- ADMIN y MIEMBRO: NOTIFICACIONES -->
+  <a mat-list-item routerLink="/notifications">
+    <mat-icon matListIcon>notifications</mat-icon>
+    Notificaciones
+  </a>
+
+  <!-- ADMIN y MIEMBRO: CONSULTAS -->
+  <a mat-list-item routerLink="/consultation">
+    <mat-icon matListIcon>search</mat-icon>
+    Consultas
+  </a>
+</mat-nav-list>
+

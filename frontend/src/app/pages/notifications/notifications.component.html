@@ -1,0 +1,106 @@
+<div class="container">
+  <h1>
+    Administrador de Notificaciones
+    <button class="custom-red-button" (click)="clearNotifications()">
+      <mat-icon>delete_sweep</mat-icon>
+      Vaciar Buzón
+    </button>
+  </h1>
+
+  <!-- Filtro por asunto -->
+  <mat-form-field appearance="outline">
+    <mat-label>Filtrar</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Convocatoria" #input />
+  </mat-form-field>
+
+  <!-- Tabla -->
+  <div class="mat-elevation-z8">
+    <table mat-table
+           [dataSource]="dataSource()"
+           matSort
+           multiTemplateDataRows
+           class="mat-table">
+
+      <!-- Columna expand/collapse -->
+      <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button (click)="expandedElement = expandedElement === row ? null : row">
+            <mat-icon>{{ chevron(row) }}</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Asunto -->
+      <ng-container matColumnDef="subject">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Asunto</th>
+        <td mat-cell *matCellDef="let row">{{ row.subject }}</td>
+      </ng-container>
+
+      <!-- Fecha -->
+      <ng-container matColumnDef="timestamp">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+        <td mat-cell *matCellDef="let row">{{ row.timestamp | date:'short' }}</td>
+      </ng-container>
+
+      <!-- Estado -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let row">
+          <span [ngClass]="row.isRead ? 'read' : 'unread'">
+            {{ row.isRead ? 'Leída' : 'No leída' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Acciones -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <div class="d-center">
+            <button *ngIf="!row.isRead" mat-icon-button (click)="markAsRead(row.id)">
+              <mat-icon>done</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteNotification(row.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Header y filas principales -->
+      <tr mat-header-row *matHeaderRowDef="columnsWithExpand"></tr>
+      <tr mat-row
+          *matRowDef="let row; columns: columnsWithExpand"
+          class="main-row"
+          [class.highlight]="!row.isRead">
+      </tr>
+
+      <!-- Fila de detalle -->
+      <ng-container matColumnDef="detail">
+        <td mat-cell *matCellDef="let row" [attr.colspan]="columnsWithExpand.length">
+          <div class="detail-container">
+            <p><strong>De:</strong> {{ row.sender }}</p>
+            <p><strong>Para:</strong> {{ row.recipient }}</p>
+            <p class="content">{{ row.content }}</p>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-row
+          *matRowDef="let row; columns: ['detail'];"
+          class="detail-row"
+          [@detailExpand]="row === expandedElement ? 'expanded' : 'collapsed'">
+      </tr>
+
+      <!-- Fila sin datos -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="columnsWithExpand.length">
+          No hay notificaciones que coincidan con “{{ input.value }}”
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+  </div>
+</div>

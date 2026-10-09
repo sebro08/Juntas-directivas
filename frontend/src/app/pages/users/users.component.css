@@ -1,0 +1,90 @@
+/* Contenedor para usuarios*/
+div {
+  padding: 2rem 1.5rem;
+  margin: 0 auto;
+  max-width: 1200px;
+  box-sizing: border-box;
+}
+
+/* Título */
+h1 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+/* Campo de búsqueda */
+mat-form-field {
+  font-size: 0.95rem;
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 1.5rem;
+  display: block;
+  margin: left;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Encabezados y celdas */
+th, td {
+  width: 25%;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Encabezado */
+th {
+  font-weight: 600;
+}
+
+/* Contenedor de tabla */
+.mat-elevation-z8 {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+/* Paginador */
+mat-paginator {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--border-color);
+  border-radius: 0 0 12px 12px;
+}
+
+/* Fila sin datos */
+tr.mat-row[mat-no-data-row] td {
+  text-align: center;
+  font-style: italic;
+  color: var(--text-secondary);
+  padding: 1rem;
+  font-size: 0.95rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  div {
+    padding: 1rem;
+  }
+
+  mat-form-field {
+    margin-left: 0;
+  }
+
+  th, td {
+    font-size: 0.9rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}

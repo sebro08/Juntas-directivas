@@ -1,0 +1,209 @@
+<div class="d-flex container" style="flex-direction: column">
+    <div class="w-100 d-flex details-container" style="justify-content: space-around;">
+        <div class="d-flex d-flex--column">
+            <h4 class="text-center">
+                Nombre de la sesion:
+            </h4>
+            <h5 class="text-center">
+                {{sessionDetails?.title}}
+            </h5>
+        </div>
+
+        <div class="d-flex d-flex--column">
+            <h4 class="text-center">
+                Tipo:
+            </h4>
+            <h5 class="text-center">
+                {{sessionDetails?.modality.name}}
+            </h5>
+        </div>
+
+        <div class="d-flex d-flex--column">
+            <h4 class="text-center">
+                Hora de Inicio:
+            </h4>
+            <h5 class="text-center">
+                {{sessionDetails?.timeStart}}
+            </h5>
+        </div>
+    </div>
+    <div class="d-flex">
+        <!-- Left Column | Participants -->
+        <div class="participants-container">
+            <h5 class="m-0">Participantes</h5>
+            @for (participant of sessionParticipants; track participant.id) {
+                @if (participant.user === null) {
+                    <div class="participant">
+                        <p (click)="toggleAttendance(participant)"
+                           class="click"
+                           [ngClass]="{'participant--present': participant.attended, 'participant--absent': !participant.attended}">{{participant.externalGuest.name}}</p>
+                    </div>
+                } @else {
+                    <div class="participant">
+                        <p (click)="toggleAttendance(participant)"
+                           class="click"
+                           [ngClass]="{'participant--present': participant.attended, 'participant--absent': !participant.attended}">{{participant.user.firstName + ' ' + participant.user.lastName}}</p>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="w-100 d-flex d-flex--column execution-container" style="justify-content: center">
+            <div class="d-flex d-flex--column w-100 text-center"> @if (selectedAgendaPoint) {
+                <h3>
+                    {{selectedPointLabel}}
+                </h3>
+            }
+                <h2>
+                    {{currentTime}}
+                </h2>
+                <div class="agenda-timer text-center">
+                    <strong>⏱ Tiempo transcurrido:</strong>
+                    <span [style.color]="timerColor">
+                      {{ minutesElapsed }}:{{ secondsElapsed < 10 ? '0' + secondsElapsed : secondsElapsed }}
+                    </span>
+                    <span class="expected">/ {{ selectedAgendaPoint?.point?.duration }} min</span>
+                </div>
+            </div>
+            <mat-tab-group>
+                <mat-tab label="General">
+
+                    <div class="d-flex d-flex--column d-flex--justify-center w-100 mt-4">
+                        <!-- Annotation -->
+                        <div class="w-100 d-flex d-flex--justify-center d-flex--align-center">
+                            <mat-form-field appearance="outline" class="w-100 mb-2 w-70">
+                                <mat-label>Anotación</mat-label>
+                                <textarea matInput [formControl]="annotationControl" rows="3"></textarea>
+                            </mat-form-field>
+                            <button mat-fab color="primary" (click)="submitAnnotation()"
+                                    [disabled]="!annotationControl.value">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+
+                        <!-- Final Resolution -->
+                        <div class="w-100 d-flex d-flex--justify-center d-flex--align-center">
+                            <mat-form-field appearance="outline" class="w-100 mb-2 w-70">
+                                <mat-label>Resolución final</mat-label>
+                                <textarea matInput [formControl]="resolutionControl" rows="3"></textarea>
+                            </mat-form-field>
+                            <button mat-fab color="primary" (click)="submitResolution()"
+                                    [disabled]="!resolutionControl.value">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+
+                        <!-- Assignment -->
+                        <div class="w-100 d-flex d-flex--justify-center d-flex--align-center">
+                            <div class="d-flex d-flex--column w-70">
+                                <mat-form-field appearance="outline" class="w-100 mb-2 w-100">
+                                    <mat-label>Asignar acción</mat-label>
+                                    <textarea matInput [formControl]="assignmentControl" rows="3"></textarea>
+                                </mat-form-field>
+                                <!-- Assignee -->
+                                <mat-form-field class="w-100" appearance="outline">
+                                    <mat-label>Participantes</mat-label>
+                                    <mat-select [formControl]="assigneeControl">
+                                        <mat-option *ngFor="let user of users" [value]="user.id">{{ user.firstName + ' ' + user.lastName }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <button mat-fab color="primary" (click)="submitAssignment()"
+                                    [disabled]="assignmentControl.invalid || !assigneeControl.value || !assignmentControl.value">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="d-flex d-flex--justify-center mt-3" *ngIf="selectedAgendaPoint?.point.requiresVote">
+                        <button
+                                mat-raised-button
+                                class="vote-button approve-button"
+                                [ngClass]="{'selected-approve': selectedAgendaPoint.point.voteResult === 1}"
+                                (click)="updateVoteResult(1)"
+                        >
+                            Aprobar
+                        </button>
+
+                        <button
+                                mat-raised-button
+                                class="vote-button reject-button ml-2"
+                                [ngClass]="{'selected-reject': selectedAgendaPoint.point.voteResult === 2}"
+                                (click)="updateVoteResult(2)"
+                        >
+                            Rechazar
+                        </button>
+                    </div>
+                </mat-tab>
+
+                <mat-tab label="Anotaciones">
+                    <ul class="annotation-list">
+                        <li *ngFor="let note of selectedAgendaPoint.point.annotations">
+                            <div class="d-flex d-flex--align-center">
+                              <span>
+                                {{ note.content }}
+                              </span>
+
+                                <button mat-icon-button color="warn" (click)="deleteAnnotation(note.id)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </mat-tab>
+
+                <mat-tab label="Decisiones">
+                    <ul class="annotation-list">
+                        <li *ngFor="let decision of selectedAgendaPoint.point.decisions">
+                            <div class="d-flex d-flex--align-center">
+                              <span>
+                                  {{ decision.result }}
+                              </span>
+                                <button mat-icon-button color="warn" (click)="deleteDecision(decision.id)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </mat-tab>
+
+                <mat-tab label="Tareas">
+                    <ul class="task-list">
+                        <li *ngFor="let task of sessionDetails.tasks">
+                            <div class="d-flex d-flex--align-center d-flex--justify-between w-100">
+                                <div>
+                                    <span>{{ task.description }}</span>
+                                    <small class="ml-2">— <strong>{{ task.assignedTo.firstName + ' ' + task.assignedTo.lastName }}</strong></small>
+                                </div>
+
+                                <button mat-icon-button (click)="deleteTask(task.id)" class="delete-task-button">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </mat-tab>
+            </mat-tab-group>
+            <div class="d-flex" style="justify-content: space-between; padding: 1rem">
+                <button mat-mini-fab (click)="goToPreviousPoint()" [disabled]="selectedAgendaPoint.idx === 0">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <button mat-flat-button class="custom-red-button" (click)="updateStatusAndExecute(3)">Finalizar Sesión</button>
+
+                <button mat-mini-fab (click)="goToNextPoint()" [disabled]="selectedAgendaPoint.idx === sessionAgendaPoints.length - 1">
+                    <mat-icon>arrow_forward</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div class="participants-container2">
+            <h5 class="m-0 text-center">Puntos por tratar</h5>
+            <div *ngFor="let item of sessionAgendaPoints; trackBy: trackByAgendaItemId" class="text-center">
+                <p>{{ item.title }}</p>
+                <p><strong>{{ item.duration }}m</strong></p>
+            </div>
+        </div>
+    </div>
+</div>

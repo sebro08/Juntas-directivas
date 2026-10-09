@@ -1,0 +1,123 @@
+<div class="settings-container">
+  <div class="page-header">
+    <h1>{{ isEditMode ? 'Editar Sesión' : 'Agregar Sesión' }}</h1>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="save()" class="settings-form">
+
+    <!-- Título -->
+    <div class="mb-4">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Título</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+    </div>
+
+    <!-- Fecha y Horas -->
+    <div class="mb-4 d-flex">
+      <mat-form-field style="flex-grow: 1" appearance="outline">
+        <mat-label>Fecha</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field style="flex-grow: 1" appearance="outline">
+        <mat-label>Hora Inicio</mat-label>
+        <input matInput type="time" formControlName="startTime" />
+      </mat-form-field>
+
+      <mat-form-field style="flex-grow: 1" appearance="outline">
+        <mat-label>Hora Fin</mat-label>
+        <input matInput type="time" formControlName="endTime" />
+      </mat-form-field>
+    </div>
+
+    <!-- Modalidad y Participantes -->
+    <div class="d-flex">
+      <mat-form-field class="w-50" appearance="outline">
+        <mat-label>Modalidad</mat-label>
+        <mat-select formControlName="modalityId">
+          <mat-option *ngFor="let mod of modalities" [value]="mod.id">{{ mod.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="w-50" appearance="outline">
+        <mat-label>Participantes</mat-label>
+        <mat-select formControlName="participantIds" multiple>
+          <mat-option *ngFor="let user of users" [value]="user.id">{{ user.firstName + ' ' + user.lastName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Agenda -->
+    <h3>Agenda</h3>
+    <div formArrayName="agenda" class="agenda" cdkDropList (cdkDropListDropped)="dropAgenda($event)">
+      <div *ngFor="let point of agenda.controls; let i = index" [formGroupName]="i" class="agenda-item" cdkDrag>
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center">
+          <mat-form-field style="flex-grow: 1" appearance="outline">
+            <mat-label>Título</mat-label>
+            <input matInput formControlName="title" />
+          </mat-form-field>
+
+          <mat-form-field style="flex-grow: 1" appearance="outline">
+            <mat-label>Expositor</mat-label>
+            <mat-select formControlName="speakerId">
+              <mat-option *ngFor="let user of users" [value]="user.id">{{ user.firstName + ' ' + user.lastName }}</mat-option>
+              <mat-option [value]="VISITOR_USER">Externo</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field style="flex-grow: 1" appearance="outline">
+            <mat-label>Tiempo (min)</mat-label>
+            <input matInput type="number" formControlName="duration" />
+          </mat-form-field>
+
+          <button mat-icon-button color="warn" (click)="removeAgendaPoint(i)" *ngIf="agenda.length > 1" style="flex-grow: 1; align-items: center">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+
+        <!-- Expositor externo -->
+        <div *ngIf="agenda.at(i).get('speakerId')?.value == VISITOR_USER" style="display: flex; gap: 1rem;">
+          <mat-form-field style="flex-grow: 1" appearance="outline">
+            <mat-label>Nombre del Expositor</mat-label>
+            <input matInput formControlName="externalName" />
+          </mat-form-field>
+
+          <mat-form-field style="flex-grow: 1" appearance="outline">
+            <mat-label>Correo del Expositor</mat-label>
+            <input matInput type="email" formControlName="externalEmail" />
+          </mat-form-field>
+        </div>
+
+        <!-- Subida de archivo -->
+        <div style="margin-top: 1rem;">
+          <input type="file" (change)="uploadFile($event, i)" accept=".pdf,.doc,.docx,.pptx" />
+          <div *ngIf="agenda.at(i).get('filePath')?.value">
+            <a [href]="'/' + agenda.at(i).get('filePath')?.value" target="_blank">Ver archivo</a>
+          </div>
+        </div>
+
+        <!-- Votación -->
+        <mat-checkbox formControlName="requiresVote">
+          ¿Requiere votación?
+        </mat-checkbox>
+      </div>
+    </div>
+
+    <!-- Botón Agregar Punto -->
+    <div class="agenda-actions">
+      <button mat-stroked-button type="button" class="cancel-button" (click)="addAgendaPoint()">
+        Agregar Punto
+      </button>
+    </div>
+
+    <!-- Acciones -->
+    <div class="settings-actions">
+      <button mat-stroked-button type="button" class="cancel-button w-100" (click)="goBack()">Cancelar</button>
+      <button mat-flat-button type="submit" class="save-button w-100">Guardar</button>
+    </div>
+
+  </form>
+</div>

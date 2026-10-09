@@ -1,0 +1,154 @@
+/* Contenedor general de settings*/
+.settings-container {
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+/* Formulario centrado */
+.settings-form {
+  background-color: var(--background-white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+
+/* Contenedor individual para cada parámetro */
+.form-section {
+  background-color: var(--background-white);
+  padding: 1.5rem;
+  border-radius: 10px;
+  flex: 1;
+  border: 1px solid var(--border-color);
+}
+
+/* Fila que contiene ambas secciones */
+.form-row {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  align-items: flex-start;
+}
+
+/* Título */
+h1 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+/* Título y descripción */
+.form-section h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+.form-section p {
+  margin: 0 0 1rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Campo de entrada */
+.mat-mdc-form-field {
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+.mat-input-element:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(91, 0, 228, 0.15);
+}
+
+/* Acciones */
+.settings-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.settings-actions button {
+  min-width: 120px;
+  padding: 0.5rem 1.2rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-radius: 8px;
+}
+
+/* Botón Cancelar personalizado */
+.cancel-button {
+  color: var(--primary-color-hover);
+  background-color: white;
+  border: 1px solid var(--primary-color-hover);
+  transition: background-color 0.2s ease;
+}
+
+.cancel-button:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Botón Guardar personalizado */
+.save-button {
+  background-color: var(--primary-color-hover) !important;
+  color: white;
+  border: none;
+  transition: filter 0.2s ease;
+}
+
+.save-button:hover {
+  filter: brightness(0.95);
+}
+
+.save-button:disabled {
+  background-color: #9c9a9a !important;
+  color: white !important;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .settings-container {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .settings-form {
+    padding: 1rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .settings-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .settings-actions button {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .form-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .form-section p {
+    font-size: 0.85rem;
+  }
+}

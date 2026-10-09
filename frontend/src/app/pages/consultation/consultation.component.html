@@ -1,0 +1,113 @@
+<div class="container">
+  <h1>Módulo de Consultas</h1>
+
+  <!-- Pestañas -->
+  <mat-tab-group (selectedTabChange)="tabChanged($event)">
+    <!-- Admin -->
+    <ng-container *ngIf="role === 'Admin'">
+      <mat-tab label="En Progreso"></mat-tab>
+      <mat-tab label="Agendas Editables"></mat-tab>
+      <mat-tab label="Próximas (sin acta)"></mat-tab>
+    </ng-container>
+
+    <!-- Miembro de Junta -->
+    <ng-container *ngIf="role === 'Miembro de Junta'">
+      <mat-tab label="Actas como Expositor"></mat-tab>
+      <mat-tab label="Actas como Responsable"></mat-tab>
+      <mat-tab label="Sesiones Ausente"></mat-tab>
+    </ng-container>
+  </mat-tab-group>
+
+  <!-- Filtro por rango -->
+  <div class="filters">
+    <div class="d-flex gap">
+      <mat-form-field appearance="outline">
+        <mat-label>Inicio</mat-label>
+        <input matInput type="date" [(ngModel)]="startDate">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fin</mat-label>
+        <input matInput type="date" [(ngModel)]="endDate">
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" (click)="applyRange()">Filtrar</button>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <table mat-table [dataSource]="dataSource()" class="mat-elevation-z8">
+
+    <!-- ID -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let el">{{ el.id }}</td>
+    </ng-container>
+
+    <!-- Título -->
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Título</th>
+      <td mat-cell *matCellDef="let el">{{ el.title || el.sessionTitle }}</td>
+    </ng-container>
+
+    <!-- Fecha -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Fecha</th>
+      <td mat-cell *matCellDef="let el">
+        {{ (el.date || el.createdAt) | date:'shortDate' }}
+      </td>
+    </ng-container>
+
+    <!-- Acciones -->
+    <ng-container matColumnDef="extra">
+      <th mat-header-cell *matHeaderCellDef>Acción</th>
+      <td mat-cell *matCellDef="let el">
+
+        <!-- PDF -->
+        <button *ngIf="el.pdfPath"
+                mat-icon-button
+                aria-label="PDF"
+                (click)="pdf(el)">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </button>
+
+        <!-- Ver ejecución (En progreso) -->
+        <button *ngIf="currentMode === 'admin-inprogress'"
+                mat-icon-button
+                aria-label="Ejecución"
+                [routerLink]="['/sessions/execute', el.id]">
+          <mat-icon>visibility</mat-icon>
+        </button>
+
+        <!-- Editar agenda (Agendas editables) -->
+        <button *ngIf="currentMode === 'admin-editable'"
+                mat-icon-button
+                aria-label="Editar"
+                [routerLink]="['/sessions/new']"
+                [queryParams]="{ edit: el.id }">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <!-- Ver detalles (Próximas sin acta) -->
+        <button *ngIf="currentMode === 'admin-upcoming'"
+                mat-icon-button
+                aria-label="Detalles"
+                [routerLink]="['/sessions/summary', el.id]">
+          <mat-icon>visibility</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+    <!-- Sin datos -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+        Sin resultados
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+</div>
